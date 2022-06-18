@@ -1,15 +1,15 @@
 const successResponse = (res, msg = "operation successful") => {
   var data = {
     status: 1,
-    message: msg,
+    msg: msg,
   };
   return res.status(200).json(data);
 };
 
-const successResponseWithData = (res, msg = "operation successful", data) => {
+const successResponseWithData = (res, data, msg = "operation successful") => {
   var resData = {
     status: 1,
-    message: msg,
+    msg: msg,
     data: data,
   };
   return res.status(200).json(resData);
@@ -18,7 +18,7 @@ const successResponseWithData = (res, msg = "operation successful", data) => {
 const errorResponse = (res, msg = "internal server error") => {
   var data = {
     status: 0,
-    message: msg,
+    msg: msg,
   };
   return res.status(500).json(data);
 };
@@ -26,15 +26,23 @@ const errorResponse = (res, msg = "internal server error") => {
 const notFoundResponse = (res, msg = "resource not found") => {
   var data = {
     status: 0,
-    message: msg,
+    msg: msg,
   };
   return res.status(404).json(data);
 };
 
-const validationErrorWithData = (res, msg = "invalid data", data) => {
+const validationError = (res, msg = "invalid data") => {
   var resData = {
     status: 0,
-    message: msg,
+    msg: msg,
+  };
+  return res.status(400).json(resData);
+};
+
+const validationErrorWithData = (res, data, msg = "invalid data") => {
+  var resData = {
+    status: 0,
+    msg: msg,
     data: data,
   };
   return res.status(400).json(resData);
@@ -43,7 +51,7 @@ const validationErrorWithData = (res, msg = "invalid data", data) => {
 const unauthorizedResponse = (res, msg = "unauthorized request") => {
   var data = {
     status: 0,
-    message: msg,
+    msg: msg,
   };
   return res.status(401).json(data);
 };
@@ -55,4 +63,5 @@ export default {
   notFoundResponse,
   validationErrorWithData,
   unauthorizedResponse,
+  validationError,
 };

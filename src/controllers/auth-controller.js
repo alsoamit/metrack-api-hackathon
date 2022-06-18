@@ -49,7 +49,7 @@ class AuthController {
     setTokensInCookie(res, { accessToken, refreshToken });
 
     // response
-    return APIResponse.successResponseWithData(res, { auth: true, user });
+    return APIResponse.successResponseWithData(res, user);
   }
 
   async logout(req, res) {
@@ -58,16 +58,13 @@ class AuthController {
 
     res.clearCookie("metrackRefreshCookie");
     res.clearCookie("metrackAccessCookie");
-    return APIResponse.successResponseWithData(res, {
-      user: null,
-      auth: false,
-    });
+    return APIResponse.successResponse(res, "logged out");
   }
 
   async registerUser(req, res) {
-    const { username, email, password } = req.body;
+    const { name, email, password } = req.body;
 
-    if (!username || !password || !email) {
+    if (!name || !password || !email) {
       return APIResponse.unauthorizedResponse(res, "all fields are required");
     }
 
@@ -77,7 +74,7 @@ class AuthController {
         return APIResponse.validationErrorWithData(res, "user already exists");
       }
       user = await userService.createUser({
-        username,
+        name,
         email,
         password,
       });
@@ -95,7 +92,7 @@ class AuthController {
 
       setTokensInCookie(res, { accessToken, refreshToken });
 
-      return APIResponse.successResponseWithData(res, "account created", user);
+      return APIResponse.successResponseWithData(res, user, "account created");
     } catch (err) {
       return APIResponse.errorResponse(res);
     }
@@ -105,22 +102,18 @@ class AuthController {
     const { email, password } = req.body;
 
     if (!password || !email) {
-      return APIResponse.validationErrorWithData(res, "empty fields");
+      return APIResponse.validationError(res, "empty fields");
     }
 
     try {
       let user = await userService.findUser({ email });
 
       if (!user) {
-        return APIResponse.validationErrorWithData(res, "user not found");
+        return APIResponse.validationError(res, "user not found");
       }
 
       if (user.password !== password) {
-        return APIResponse.validationErrorWithData(
-          res,
-          "wrong credentials",
-          req.body
-        );
+        return APIResponse.validationError(res, "wrong credentials");
       }
       // generate new token
       const { accessToken, refreshToken } = tokenService.generateToken({
@@ -135,10 +128,7 @@ class AuthController {
 
       setTokensInCookie(res, { accessToken, refreshToken });
 
-      return APIResponse.successResponseWithData(res, {
-        msg: "Login Successfull",
-        user,
-      });
+      return APIResponse.successResponseWithData(res, user, "logged in");
     } catch (err) {
       console.log(err);
       return APIResponse.errorResponse(res);
