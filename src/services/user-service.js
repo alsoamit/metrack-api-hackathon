@@ -19,6 +19,10 @@ class UserService {
     const user = await UserModel.create(data);
     return user;
   }
+
+  async updateUser(filter, data) {
+    return await UserModel.updateOne(filter, data, { new: true });
+  }
 }
 
 export default new UserService();

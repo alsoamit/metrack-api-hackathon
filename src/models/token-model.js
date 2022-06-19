@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const refreshSchema = new Schema(
+const tokenSchema = new Schema(
   {
     token: { type: String, required: true },
     userId: { type: Schema.Types.ObjectId, ref: "User" },
@@ -10,4 +10,4 @@ const refreshSchema = new Schema(
   }
 );
 
-export default model("Refresh", refreshSchema, "tokens");
+export default model("MagicToken", tokenSchema, "magictokens");
