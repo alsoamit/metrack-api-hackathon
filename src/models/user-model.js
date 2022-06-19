@@ -8,6 +8,11 @@ const userSchema = new mongoose.Schema(
     name: {
       required: true,
       type: String,
+      default: "User",
+    },
+    verified: {
+      type: Boolean,
+      default: false,
     },
     role: {
       type: Number,

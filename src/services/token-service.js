@@ -23,9 +23,7 @@ class TokenService {
         token,
         userId,
       });
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 
   async verifyAccessToken(token) {

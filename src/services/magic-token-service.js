@@ -17,7 +17,6 @@ class MagicTokenService {
   }
 
   async findOne(filter) {
-    console.log(filter);
     return await Token.findOne(filter);
   }
 

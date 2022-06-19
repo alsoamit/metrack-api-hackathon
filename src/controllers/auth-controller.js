@@ -52,7 +52,7 @@ class AuthController {
     }
 
     setTokensInCookie(res, { accessToken, refreshToken });
-
+    user.password = "";
     // response
     return APIResponse.successResponseWithData(res, user);
   }
@@ -70,33 +70,44 @@ class AuthController {
     const { name, email, password } = req.body;
 
     if (!name || !password || !email) {
-      return APIResponse.unauthorizedResponse(res, "all fields are required");
+      return APIResponse.unauthorizedResponse(res, "empty fields");
     }
 
     try {
       let user = await userService.findUser({ email });
+      let hashedPassword = await hashService.encrypt(password);
       if (user) {
-        return APIResponse.validationErrorWithData(res, "user already exists");
+        return APIResponse.validationError(res, "user already exists");
       }
       user = await userService.createUser({
         name,
         email,
-        password,
+        password: hashedPassword,
       });
+      const { resetToken, token } = await magicTokenService.generate(user._id);
+      if (!resetToken) {
+        return APIResponse.errorResponse(res, "internal server error");
+      }
+      const link = `${process.env.CLIENT_URL}/auth/verify-email/?userId=${user._id}&token=${resetToken}`;
+      // send the email template
+      const data = await ejs.renderFile(
+        __dirname + "/../mails/verify-email.ejs",
+        { email: user.email, name: user.name, link },
+        { async: true }
+      );
 
-      // generate new token
-      const { accessToken, refreshToken } = tokenService.generateToken({
-        _id: user._id,
-      });
+      const emailSent = await mailService.send(
+        user.email,
+        "Email Verification",
+        data
+      );
 
-      // save refresh token in db
-      const savedToken = tokenService.storeRefreshToken(user._id, refreshToken);
-      if (!savedToken) {
+      if (!emailSent) {
+        await magicTokenService.remove(token);
         return APIResponse.errorResponse(res);
       }
 
-      setTokensInCookie(res, { accessToken, refreshToken });
-
+      user.password = "";
       return APIResponse.successResponseWithData(res, user, "account created");
     } catch (err) {
       return APIResponse.errorResponse(res);
@@ -116,8 +127,8 @@ class AuthController {
       if (!user) {
         return APIResponse.validationError(res, "user not found");
       }
-
-      if (user.password !== password) {
+      const match = await hashService.compare(password, user.password);
+      if (!match) {
         return APIResponse.validationError(res, "wrong credentials");
       }
       // generate new token
@@ -132,10 +143,9 @@ class AuthController {
       }
 
       setTokensInCookie(res, { accessToken, refreshToken });
-
+      user.password = "";
       return APIResponse.successResponseWithData(res, user, "logged in");
     } catch (err) {
-      console.log(err);
       return APIResponse.errorResponse(res);
     }
   }
@@ -158,7 +168,7 @@ class AuthController {
       if (!resetToken) {
         return APIResponse.errorResponse(res, "internal server error");
       }
-      const link = `${process.env.CLIENT_URL}/auth/reset-password/${user._id}/${resetToken}`;
+      const link = `${process.env.CLIENT_URL}/auth/reset-password?userId=${user._id}&token=${resetToken}`;
       // send the email template
       const data = await ejs.renderFile(
         __dirname + "/../mails/reset-password.ejs",
@@ -179,7 +189,34 @@ class AuthController {
 
       return APIResponse.successResponseWithData(res, user.email, "email sent");
     } catch (err) {
-      console.log(err);
+      return APIResponse.errorResponse(res);
+    }
+  }
+
+  async magicTokenValidation(req, res) {
+    try {
+      const { userId, token } = req.body;
+
+      let passwordResetToken = await magicTokenService.findOne({
+        userId: mongoose.Types.ObjectId(userId),
+      });
+
+      if (!passwordResetToken) {
+        return APIResponse.validationError(res, "invalid or expired token");
+      }
+
+      const isValid = await hashService.compare(
+        token,
+        passwordResetToken.token
+      );
+
+      if (!isValid) {
+        return APIResponse.validationError(res, "invalid or expired token 2");
+      }
+
+      return APIResponse.successResponse(res, "valid token");
+    } catch (err) {
+      //
       return APIResponse.errorResponse(res);
     }
   }
