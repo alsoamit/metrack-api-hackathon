@@ -1,7 +1,8 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const CourseSchema = new mongoose.Schema({
-    name: { type: String, },
+const CourseSchema = new mongoose.Schema(
+  {
+    name: { type: String },
     students: [{ type: String }],
     channel: { type: String },
     description: { type: String },
@@ -13,18 +14,18 @@ const CourseSchema = new mongoose.Schema({
     level: { type: String },
     isPublished: { type: Boolean, default: false },
     projects: [
-        {
-            projectName: { type: String },
-            projectImage: { type: String },
-            projectUrl: { type: String },
-            projectCode: { type: String },
-            studentName: { type: String },
-            studentImage: { type: String },
-            appreciation: { type: Number, default: 0 },
-        }
+      {
+        projectName: { type: String },
+        projectImage: { type: String },
+        projectUrl: { type: String },
+        projectCode: { type: String },
+        studentName: { type: String },
+        studentImage: { type: String },
+        appreciation: { type: Number, default: 0 },
+      },
     ],
-},
-    { timestamps: true }
-)
+  },
+  { timestamps: true }
+);
 
-export default model("Course", CourseSchema, "courses");
+export default mongoose.model("Course", CourseSchema, "courses");

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import adminController from "../controllers/adminController";
 import authController from "../controllers/auth-controller";
 import courseController from "../controllers/course-controller";
 import verifyEmailController from "../controllers/verify-email-controller";
@@ -17,10 +18,21 @@ router.post("/api/validate-magictoken", authController.magicTokenValidation);
 router.get("/api/verify-email", authenticate, verifyEmailController.sendLink);
 router.post("/api/verify-email", verifyEmailController.verify);
 
+// ADMIN AUTH
+router.post("/api/admin/login", authController.adminLogin);
+router.post("/api/admin/logout", authController.logout);
+
+// ADMIN ROUTES
+router.post(
+  "/api/admin/get-users",
+  authenticate,
+  verifyAdmin,
+  adminController.getUsers
+);
+
 // only for testing
 router.get("/api/admin", authenticate, verifyAdmin, (req, res) => {
-    return APIResponse.successResponse(res)
-        ;
+  return APIResponse.successResponse(res);
 });
 
 // TEMPALTE AUTH
@@ -28,7 +40,17 @@ router.post("/api/register", authController.registerUser);
 router.post("/api/login", authController.loginUser);
 
 // COURSES (ADMIN)
-router.post('/api/add-course', courseController.addCourse)
-router.post('/api/delete-course', courseController.deleteCourse)
+router.post(
+  "/api/add-course",
+  authenticate,
+  verifyAdmin,
+  courseController.addCourse
+);
+router.post(
+  "/api/delete-course",
+  authenticate,
+  verifyAdmin,
+  courseController.deleteCourse
+);
 
 export default router;
