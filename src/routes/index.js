@@ -30,6 +30,13 @@ router.post(
   adminController.getUsers
 );
 
+router.delete(
+  "/api/admin/delete-user/:id",
+  authenticate,
+  verifyAdmin,
+  adminController.deleteUser
+);
+
 // only for testing
 router.get("/api/admin", authenticate, verifyAdmin, (req, res) => {
   return APIResponse.successResponse(res);
