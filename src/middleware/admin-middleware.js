@@ -1,26 +1,19 @@
 import APIResponse from "../helpers/APIResponse";
-import tokenService from "../services/token-service";
 
-async function authenticate(req, res, next) {
-    try {
-        const { metrackAccessCookie } = req.cookies;
-
-        if (!metrackAccessCookie) {
-            return APIResponse.validationErrorWithData(res, "invalid token", null);
-        }
-
-        const userData = await tokenService.verifyAccessToken(metrackAccessCookie);
-
-        if (!userData) {
-            throw new Error();
-        }
-
-        req.user = userData;
-        next();
-    } catch (err) {
-        console.log(err);
-        return APIResponse.unauthorizedResponse(res, "invalid token");
+async function verifyAdmin(req, res, next) {
+  try {
+    const { role } = req.user;
+    if (role === undefined) {
+      return APIResponse.unauthorizedResponse(res, "user not found");
     }
+    if (role >= 2) {
+      return next();
+    }
+    return APIResponse.unauthorizedResponse(res, "invalid admin");
+  } catch (err) {
+    console.log({ err });
+    return APIResponse.unauthorizedResponse(res);
+  }
 }
 
-export default authenticate;
+export default verifyAdmin;

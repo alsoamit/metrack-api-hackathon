@@ -2,6 +2,8 @@ import { Router } from "express";
 import authController from "../controllers/auth-controller";
 import courseController from "../controllers/course-controller";
 import verifyEmailController from "../controllers/verify-email-controller";
+import APIResponse from "../helpers/APIResponse";
+import verifyAdmin from "../middleware/admin-middleware";
 import authenticate from "../middleware/auth-middleware";
 
 const router = Router();
@@ -14,6 +16,12 @@ router.post("/api/reset-password", authController.resetPassword);
 router.post("/api/validate-magictoken", authController.magicTokenValidation);
 router.get("/api/verify-email", authenticate, verifyEmailController.sendLink);
 router.post("/api/verify-email", verifyEmailController.verify);
+
+// only for testing
+router.get("/api/admin", authenticate, verifyAdmin, (req, res) => {
+    return APIResponse.successResponse(res)
+        ;
+});
 
 // TEMPALTE AUTH
 router.post("/api/register", authController.registerUser);
