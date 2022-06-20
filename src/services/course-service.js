@@ -20,6 +20,11 @@ class CourseService {
         return course;
     }
 
+    async deleteCourse(id) {
+        const course = await CourseModel.findOneAndDelete(id);
+        return course;
+    }
+
     async updateCourse(filter, data) {
         return await CourseModel.updateOne(filter, data, { new: true });
     }

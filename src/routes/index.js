@@ -21,5 +21,6 @@ router.post("/api/login", authController.loginUser);
 
 // COURSES (ADMIN)
 router.post('/api/add-course', courseController.addCourse)
+router.post('/api/delete-course', courseController.deleteCourse)
 
 export default router;

@@ -15,11 +15,22 @@ class CourseController {
                 return APIResponse.validationError(res, "course already exists");
             }
 
-            course = CourseService.createCourse({
+            course = await CourseService.createCourse({
                 name, channel, description, thumbnail, video, channelImage, tags, level
             })
 
             return APIResponse.successResponseWithData(res, course, "course created");
+        } catch (err) {
+            return APIResponse.errorResponse(err);
+        }
+    }
+
+    async deleteCourse(req, res) {
+        const { id } = req.params;
+
+        try {
+            let course = await CourseService.deleteCourse(id)
+            return APIResponse.successResponseWithData(res, course, "course deleted");
         } catch (err) {
             return APIResponse.errorResponse(err);
         }
