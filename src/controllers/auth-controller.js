@@ -70,7 +70,7 @@ class AuthController {
     const { name, email, password } = req.body;
 
     if (!name || !password || !email) {
-      return APIResponse.unauthorizedResponse(res, "empty fields");
+      return APIResponse.unauthorizedResponse(res, "All Fields are required");
     }
 
     try {
@@ -118,7 +118,7 @@ class AuthController {
     const { email, password } = req.body;
 
     if (!password || !email) {
-      return APIResponse.validationError(res, "empty fields");
+      return APIResponse.validationError(res, "All Fields are required");
     }
 
     try {
@@ -157,7 +157,7 @@ class AuthController {
         return APIResponse.validationErrorWithData(
           res,
           req.body,
-          "empty fields"
+          "All Fields are required"
         );
       }
       const user = await userService.findUser({ email });
@@ -189,6 +189,7 @@ class AuthController {
 
       return APIResponse.successResponseWithData(res, user.email, "email sent");
     } catch (err) {
+      console.log(err)
       return APIResponse.errorResponse(res);
     }
   }
