@@ -42,6 +42,7 @@ class AuthController {
     // generate new token
     const { accessToken, refreshToken } = tokenService.generateToken({
       _id: userData._id,
+      role: user.role,
     });
 
     // update refresh token
@@ -134,6 +135,7 @@ class AuthController {
       // generate new token
       const { accessToken, refreshToken } = tokenService.generateToken({
         _id: user._id,
+        role: user.role
       });
 
       // save refresh token in db
