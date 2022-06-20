@@ -19,8 +19,7 @@ router.post("/api/verify-email", verifyEmailController.verify);
 
 // only for testing
 router.get("/api/admin", authenticate, verifyAdmin, (req, res) => {
-    return APIResponse.successResponse(res)
-        ;
+    return APIResponse.successResponse(res);
 });
 
 // TEMPALTE AUTH
@@ -28,7 +27,7 @@ router.post("/api/register", authController.registerUser);
 router.post("/api/login", authController.loginUser);
 
 // COURSES (ADMIN)
-router.post('/api/add-course', courseController.addCourse)
-router.post('/api/delete-course', courseController.deleteCourse)
+router.post('/api/add-course', authenticate, verifyAdmin, courseController.addCourse)
+router.post('/api/delete-course', authenticate, verifyAdmin, courseController.deleteCourse)
 
 export default router;
