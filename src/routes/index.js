@@ -41,7 +41,8 @@ router.post("/api/login", authController.loginUser);
 
 // COURSES (ADMIN)
 router.post('/api/admin/add-courses', authenticate, verifyAdmin, courseController.addCourse)
-router.post('/api/admin/delete-course', authenticate, verifyAdmin, courseController.deleteCourse)
+router.delete('/api/admin/delete-course/:id', authenticate, verifyAdmin, courseController.deleteCourse)
+router.post('/api/admin/edit-courses', authenticate, verifyAdmin, courseController.editCourse)
 router.get('/api/admin/get-all-course', authenticate, verifyAdmin, courseController.getAllCourses)
 router.get('/api/admin/get-course/:id', authenticate, verifyAdmin, courseController.getCourseById)
 

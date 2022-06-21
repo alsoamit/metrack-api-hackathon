@@ -29,6 +29,30 @@ class CourseController {
         }
     }
 
+    async editCourse(req, res) {
+        let { id, name, channel, description, thumbnail, video, channelImage, tags, level } = req.body;
+
+        if (!name || !channel || !description || !thumbnail || !video || !channelImage || !tags || !level) {
+            return APIResponse.unauthorizedResponse(res, "All Fields are required");
+        }
+
+        try {
+            let course = await CourseService.findCourse({ _id: id })
+            {
+                if (typeof tags == 'string') tags = tags.split(",")
+            }
+
+            course = await CourseService.updateCourse(id, {
+                name, channel, description, thumbnail, video, channelImage, tags, level
+            })
+
+            return APIResponse.successResponseWithData(res, course, "course created");
+        } catch (err) {
+            console.log(err)
+            return APIResponse.errorResponse(res);
+        }
+    }
+
     async deleteCourse(req, res) {
         const { id } = req.params;
 

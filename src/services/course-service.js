@@ -21,12 +21,12 @@ class CourseService {
     }
 
     async deleteCourse(id) {
-        const course = await CourseModel.findOneAndDelete(id);
+        const course = await CourseModel.findByIdAndDelete(id);
         return course;
     }
 
-    async updateCourse(filter, data) {
-        return await CourseModel.updateOne(filter, data, { new: true });
+    async updateCourse(id, data) {
+        return await CourseModel.findByIdAndUpdate(id, data, { new: true });
     }
 }
 
