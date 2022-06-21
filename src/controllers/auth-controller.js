@@ -115,6 +115,46 @@ class AuthController {
     }
   }
 
+  async adminLogin(req, res) {
+    const { email, password } = req.body;
+
+    if (!password || !email) {
+      return APIResponse.validationError(res, "All Fields are required");
+    }
+
+    try {
+      let user = await userService.findUser({ email });
+
+      if (!user) {
+        return APIResponse.validationError(res, "user not found");
+      }
+      const match = await hashService.compare(password, user.password);
+      if (!match) {
+        return APIResponse.validationError(res, "wrong credentials");
+      }
+      if (user.role < 2) {
+        return APIResponse.unauthorizedResponse(res, "invalid admin");
+      }
+      // generate new token
+      const { accessToken, refreshToken } = tokenService.generateToken({
+        _id: user._id,
+        role: user.role,
+      });
+
+      // save refresh token in db
+      const savedToken = tokenService.storeRefreshToken(user._id, refreshToken);
+      if (!savedToken) {
+        return APIResponse.errorResponse(res);
+      }
+
+      setTokensInCookie(res, { accessToken, refreshToken });
+      user.password = "";
+      return APIResponse.successResponseWithData(res, user, "logged in");
+    } catch (err) {
+      return APIResponse.errorResponse(res);
+    }
+  }
+
   async loginUser(req, res) {
     const { email, password } = req.body;
 
@@ -135,7 +175,7 @@ class AuthController {
       // generate new token
       const { accessToken, refreshToken } = tokenService.generateToken({
         _id: user._id,
-        role: user.role
+        role: user.role,
       });
 
       // save refresh token in db
@@ -191,7 +231,7 @@ class AuthController {
 
       return APIResponse.successResponseWithData(res, user.email, "email sent");
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return APIResponse.errorResponse(res);
     }
   }
