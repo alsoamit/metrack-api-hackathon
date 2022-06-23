@@ -2,6 +2,7 @@ import { Router } from "express";
 import adminController from "../controllers/adminController";
 import authController from "../controllers/auth-controller";
 import courseController from "../controllers/course-controller";
+import messageController from "../controllers/messageController";
 import verifyEmailController from "../controllers/verify-email-controller";
 import APIResponse from "../helpers/APIResponse";
 import verifyAdmin from "../middleware/admin-middleware";
@@ -37,20 +38,44 @@ router.delete(
   adminController.deleteUser
 );
 
-// only for testing
-router.get("/api/admin", authenticate, verifyAdmin, (req, res) => {
-  return APIResponse.successResponse(res);
-});
+// MESSAGES
+router.get("/api/messages", messageController.getMessages);
+router.post("/api/messages", authenticate, messageController.addMessage);
 
 // TEMPALTE AUTH
 router.post("/api/register", authController.registerUser);
 router.post("/api/login", authController.loginUser);
 
 // COURSES (ADMIN)
-router.post('/api/admin/add-courses', authenticate, verifyAdmin, courseController.addCourse)
-router.delete('/api/admin/delete-course/:id', authenticate, verifyAdmin, courseController.deleteCourse)
-router.post('/api/admin/edit-courses', authenticate, verifyAdmin, courseController.editCourse)
-router.get('/api/admin/get-all-course', authenticate, verifyAdmin, courseController.getAllCourses)
-router.get('/api/admin/get-course/:id', authenticate, verifyAdmin, courseController.getCourseById)
+router.post(
+  "/api/admin/add-courses",
+  authenticate,
+  verifyAdmin,
+  courseController.addCourse
+);
+router.delete(
+  "/api/admin/delete-course/:id",
+  authenticate,
+  verifyAdmin,
+  courseController.deleteCourse
+);
+router.post(
+  "/api/admin/edit-courses",
+  authenticate,
+  verifyAdmin,
+  courseController.editCourse
+);
+router.get(
+  "/api/admin/get-all-course",
+  authenticate,
+  verifyAdmin,
+  courseController.getAllCourses
+);
+router.get(
+  "/api/admin/get-course/:id",
+  authenticate,
+  verifyAdmin,
+  courseController.getCourseById
+);
 
 export default router;
