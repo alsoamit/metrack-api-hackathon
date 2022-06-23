@@ -45,5 +45,11 @@ router.delete('/api/admin/delete-course/:id', authenticate, verifyAdmin, courseC
 router.post('/api/admin/edit-courses', authenticate, verifyAdmin, courseController.editCourse)
 router.get('/api/admin/get-all-course', authenticate, verifyAdmin, courseController.getAllCourses)
 router.get('/api/admin/get-course/:id', authenticate, verifyAdmin, courseController.getCourseById)
+router.put('/api/admin/publish-course/:id', authenticate, verifyAdmin, courseController.publishCourse)
+router.put('/api/admin/unpublish-course/:id', authenticate, verifyAdmin, courseController.unPublishCourse)
+
+// COURSES (USER)
+router.get('/api/get-all-course', courseController.getPublishedCourses)
+router.get('/api/get-course/:id', courseController.getCourseById)
 
 export default router;
