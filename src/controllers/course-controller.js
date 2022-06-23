@@ -80,7 +80,51 @@ class CourseController {
 
         try {
             const course = await CourseService.findCourse({ _id: id })
+
+            if (!course) {
+                return APIResponse.notFoundResponse(res);
+            }
+
             return APIResponse.successResponseWithData(res, course);
+        } catch (err) {
+            console.log(err)
+            return APIResponse.errorResponse(res);
+        }
+    }
+
+    async getPublishedCourses(req, res) {
+        try {
+            let courses = await CourseService.getAllCourses()
+            courses = courses.filter(e => e.isPublished)
+            return APIResponse.successResponseWithData(res, courses);
+        } catch (err) {
+            console.log(err)
+            return APIResponse.errorResponse(res);
+        }
+    }
+
+    async publishCourse(req, res) {
+        const { id } = req.params;
+
+        try {
+            let course = await CourseService.findCourse({ _id: id })
+            course.isPublished = true;
+            await course.save();
+            return APIResponse.successResponseWithData(res, course, "Course Published");
+        } catch (err) {
+            console.log(err)
+            return APIResponse.errorResponse(res);
+        }
+    }
+
+    async unPublishCourse(req, res) {
+        const { id } = req.params;
+
+        try {
+            let course = await CourseService.findCourse({ _id: id })
+            course.isPublished = false;
+            await course.save();
+            return APIResponse.successResponseWithData(res, course, "Course Published");
         } catch (err) {
             console.log(err)
             return APIResponse.errorResponse(res);
