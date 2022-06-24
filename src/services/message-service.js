@@ -1,26 +1,27 @@
 import MessageModel from "../models/message-model";
 
 class MessageService {
-  async getAll(filter) {
+  async getMany(filter) {
     try {
-      const users = await MessageModel.find((filter = null)).populate(
-        "from",
-        "name"
-      );
-
-      return users;
+      return await MessageModel.find(filter)
+        .limit(100)
+        .sort({ createdAt: -1 })
+        .populate("user", "name")
+        .populate({
+          path: "replyOf",
+          populate: { path: "user", select: "name" },
+        });
     } catch (err) {
       return err;
     }
   }
 
   async create(data) {
-    const user = await MessageModel.create(data);
-    return user;
+    return await MessageModel.create(data);
   }
 
   async update(filter, data) {
-    return await MessageModel.update(filter, data, { new: true });
+    return await MessageModel.updateOne(filter, data, { new: true });
   }
 
   async deleteOne(filter) {

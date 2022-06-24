@@ -2,6 +2,7 @@ import { Router } from "express";
 import adminController from "../controllers/adminController";
 import authController from "../controllers/auth-controller";
 import courseController from "../controllers/course-controller";
+import discussionsController from "../controllers/discussionsController";
 import messageController from "../controllers/messageController";
 import verifyEmailController from "../controllers/verify-email-controller";
 import APIResponse from "../helpers/APIResponse";
@@ -38,8 +39,14 @@ router.delete(
   adminController.deleteUser
 );
 
+// DISCUSSIONS
+router.get(
+  "/api/discussions/:id",
+  authenticate,
+  discussionsController.getDiscussionById
+);
+
 // MESSAGES
-router.get("/api/messages", messageController.getMessages);
 router.post("/api/messages", authenticate, messageController.addMessage);
 
 // TEMPALTE AUTH
