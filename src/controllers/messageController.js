@@ -26,9 +26,9 @@ class MessageController {
         message,
         discussionId: discussion._id,
         user: user._id,
-        replyOf: replyOf._id,
+        replyOf: replyOf?._id,
       });
-
+      console.log({ replyOf, user });
       io.to(discussionId).emit("update_state", {
         ...savedData.toObject(),
         user: { _id: user._id },
