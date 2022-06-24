@@ -13,6 +13,9 @@ class CourseController {
       channelImage,
       tags,
       level,
+      category,
+      domain,
+      aboutChannel
     } = req.body;
 
     if (
@@ -23,7 +26,10 @@ class CourseController {
       !video ||
       !channelImage ||
       !tags ||
-      !level
+      !level ||
+      !category ||
+      !domain ||
+      !aboutChannel
     ) {
       return APIResponse.unauthorizedResponse(res, "All Fields are required");
     }
@@ -45,6 +51,9 @@ class CourseController {
         channelImage,
         tags,
         level,
+        category,
+        domain,
+        aboutChannel
       });
 
       let discussion = await discussionService.create({
@@ -151,9 +160,13 @@ class CourseController {
   }
 
   async getPublishedCourses(req, res) {
+
+    const { category } = req.query;
+
     try {
       let courses = await CourseService.getAllCourses();
       courses = courses.filter((e) => e.isPublished);
+      courses = courses.filter(e => e.category.toLowerCase() === category.toLowerCase())
       return APIResponse.successResponseWithData(res, courses);
     } catch (err) {
       console.log(err);
