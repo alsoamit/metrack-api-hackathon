@@ -100,5 +100,7 @@ router.put(
 // COURSES (USER)
 router.get("/api/get-all-course", courseController.getPublishedCourses);
 router.get("/api/get-course/:id", courseController.getCourseById);
+router.get("/api/enroll-course/:id", authenticate, courseController.enrollCourse);
+router.get("/api/get-enroll-course", authenticate, courseController.enrollCourse);
 
 export default router;

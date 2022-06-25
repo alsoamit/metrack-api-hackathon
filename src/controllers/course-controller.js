@@ -1,6 +1,7 @@
 import CourseService from "../services/course-service";
 import APIResponse from "../helpers/APIResponse";
 import discussionService from "../services/discussion-service";
+import userService from "../services/user-service";
 
 class CourseController {
   async addCourse(req, res) {
@@ -209,6 +210,57 @@ class CourseController {
       return APIResponse.errorResponse(res);
     }
   }
+
+  async enrollCourse(req, res) {
+    const { id } = req.params;
+
+    const { _id } = req.user;
+
+    try {
+      let course = await CourseService.findCourse({ _id: id });
+      let user = await userService.findUser({ _id })
+
+      let check = course.students.find(e => e === _id)
+
+      if (check) {
+        return APIResponse.validationError(res, "Already Enrolled")
+      }
+
+      user.courseEnrolled.push(id)
+      course.students.push(_id);
+      await course.save();
+      await user.save();
+      return APIResponse.successResponseWithData(
+        res,
+        user,
+        "Enrolled 🎉"
+      );
+    } catch (err) {
+      console.log(err);
+      return APIResponse.errorResponse(res);
+    }
+  }
+
+  async getEnrolledCourses(req, res) {
+
+    const { _id } = req.user;
+
+    try {
+      let user = await userService.findUser({ _id })
+
+      course.students.push(_id);
+      await course.save();
+      return APIResponse.successResponseWithData(
+        res,
+        course,
+        "Enrolled 🎉"
+      );
+    } catch (err) {
+      console.log(err);
+      return APIResponse.errorResponse(res);
+    }
+  }
+
 }
 
 export default new CourseController();
