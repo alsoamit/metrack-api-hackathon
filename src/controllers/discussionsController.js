@@ -17,6 +17,10 @@ class DiscussionController {
         return APIResponse.notFoundResponse(res, "this discussion is banned");
       }
       let chat = await messageService.getMany({ discussionId: discussion._id });
+      console.log({ chat });
+      if (!chat) {
+        chat = [];
+      }
       return APIResponse.successResponseWithData(
         res,
         { ...discussion, chat },

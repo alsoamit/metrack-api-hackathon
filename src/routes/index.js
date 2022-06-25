@@ -4,6 +4,7 @@ import authController from "../controllers/auth-controller";
 import courseController from "../controllers/course-controller";
 import discussionsController from "../controllers/discussionsController";
 import messageController from "../controllers/messageController";
+import projectController from "../controllers/projectController";
 import verifyEmailController from "../controllers/verify-email-controller";
 import APIResponse from "../helpers/APIResponse";
 import verifyAdmin from "../middleware/admin-middleware";
@@ -48,6 +49,7 @@ router.get(
 
 // MESSAGES
 router.post("/api/messages", authenticate, messageController.addMessage);
+router.post("/api/reply/", authenticate, messageController.addReply);
 
 // TEMPALTE AUTH
 router.post("/api/register", authController.registerUser);
@@ -100,7 +102,20 @@ router.put(
 // COURSES (USER)
 router.get("/api/get-all-course", courseController.getPublishedCourses);
 router.get("/api/get-course/:id", courseController.getCourseById);
-router.get("/api/enroll-course/:id", authenticate, courseController.enrollCourse);
-router.get("/api/get-enroll-course", authenticate, courseController.enrollCourse);
+router.get(
+  "/api/enroll-course/:id",
+  authenticate,
+  courseController.enrollCourse
+);
+router.get(
+  "/api/get-enroll-course",
+  authenticate,
+  courseController.enrollCourse
+);
+
+// PROJECTS
+router.post("/api/projects", authenticate, projectController.addProject);
+router.get("/api/projects", authenticate, projectController.getProjects);
+router.post("/api/addFeedback", authenticate, projectController.addFeedback);
 
 export default router;

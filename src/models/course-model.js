@@ -20,17 +20,6 @@ const CourseSchema = new Schema(
       type: Types.ObjectId,
       ref: "Discussion",
     },
-    projects: [
-      {
-        projectName: { type: String },
-        projectImage: { type: String },
-        projectUrl: { type: String },
-        projectCode: { type: String },
-        studentName: { type: String },
-        studentImage: { type: String },
-        appreciation: { type: Number, default: 0 },
-      },
-    ],
   },
   { timestamps: true }
 );
