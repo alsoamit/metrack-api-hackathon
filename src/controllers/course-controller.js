@@ -2,6 +2,7 @@ import CourseService from "../services/course-service";
 import APIResponse from "../helpers/APIResponse";
 import discussionService from "../services/discussion-service";
 import userService from "../services/user-service";
+import projectService from "../services/project-service";
 
 class CourseController {
   async addCourse(req, res) {
@@ -16,7 +17,7 @@ class CourseController {
       level,
       category,
       domain,
-      aboutChannel
+      aboutChannel,
     } = req.body;
 
     if (
@@ -54,7 +55,7 @@ class CourseController {
         level,
         category,
         domain,
-        aboutChannel
+        aboutChannel,
       });
 
       let discussion = await discussionService.create({
@@ -129,7 +130,7 @@ class CourseController {
       let course = await CourseService.deleteCourse(id);
       return APIResponse.successResponseWithData(res, course, "course deleted");
     } catch (err) {
-      return APIResponse.errorResponse(err);
+      return APIResponse.errorResponse(res, err);
     }
   }
 
@@ -152,8 +153,16 @@ class CourseController {
       if (!course) {
         return APIResponse.notFoundResponse(res);
       }
-
-      return APIResponse.successResponseWithData(res, course);
+      const projects = await projectService.getMany({ courseId: course._id });
+      console.log({ projects });
+      if (!projects) {
+        projects = [];
+      }
+      const data = {
+        ...course,
+        projects: projects,
+      };
+      return APIResponse.successResponseWithData(res, data);
     } catch (err) {
       console.log(err);
       return APIResponse.errorResponse(res);
@@ -161,13 +170,14 @@ class CourseController {
   }
 
   async getPublishedCourses(req, res) {
-
     const { category } = req.query;
 
     try {
       let courses = await CourseService.getAllCourses();
       courses = courses.filter((e) => e.isPublished);
-      courses = courses.filter(e => e.category.toLowerCase() === category.toLowerCase())
+      courses = courses.filter(
+        (e) => e.category.toLowerCase() === category.toLowerCase()
+      );
       return APIResponse.successResponseWithData(res, courses);
     } catch (err) {
       console.log(err);
@@ -218,23 +228,19 @@ class CourseController {
 
     try {
       let course = await CourseService.findCourse({ _id: id });
-      let user = await userService.findUser({ _id })
+      let user = await userService.findUser({ _id });
 
-      let check = course.students.find(e => e === _id)
+      let check = course.students.find((e) => e === _id);
 
       if (check) {
-        return APIResponse.validationError(res, "Already Enrolled")
+        return APIResponse.validationError(res, "Already Enrolled");
       }
 
-      user.courseEnrolled.push(id)
+      user.courseEnrolled.push(id);
       course.students.push(_id);
       await course.save();
       await user.save();
-      return APIResponse.successResponseWithData(
-        res,
-        user,
-        "Enrolled 🎉"
-      );
+      return APIResponse.successResponseWithData(res, user, "Enrolled 🎉");
     } catch (err) {
       console.log(err);
       return APIResponse.errorResponse(res);
@@ -242,25 +248,18 @@ class CourseController {
   }
 
   async getEnrolledCourses(req, res) {
-
     const { _id } = req.user;
 
     try {
-      let user = await userService.findUser({ _id })
-
+      let user = await userService.findUser({ _id });
       course.students.push(_id);
       await course.save();
-      return APIResponse.successResponseWithData(
-        res,
-        course,
-        "Enrolled 🎉"
-      );
+      return APIResponse.successResponseWithData(res, course, "Enrolled 🎉");
     } catch (err) {
       console.log(err);
       return APIResponse.errorResponse(res);
     }
   }
-
 }
 
 export default new CourseController();

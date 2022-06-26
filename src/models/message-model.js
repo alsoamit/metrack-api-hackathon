@@ -5,7 +5,11 @@ const MessageSchema = new Schema(
     message: { type: String, required: true },
     discussionId: { type: Types.ObjectId, required: true, ref: "Discussion" },
     user: { type: Types.ObjectId, required: true, ref: "User" },
-    replyOf: { type: Types.ObjectId, ref: "Message" },
+    replies: [{ type: Types.ObjectId, ref: "Message" }],
+    isReply: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

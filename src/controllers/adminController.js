@@ -11,7 +11,7 @@ class AdminController {
       let users = await userService.getAllUser(filter);
       return APIResponse.successResponseWithData(res, users, "found users");
     } catch (err) {
-      return APIResponse.errorResponse(err);
+      return APIResponse.errorResponse(res, err);
     }
   }
 
@@ -27,7 +27,7 @@ class AdminController {
       }
       return APIResponse.successResponseWithData(res, { id }, "user delete");
     } catch (err) {
-      return APIResponse.errorResponse(err);
+      return APIResponse.errorResponse(res, err);
     }
   }
 }

@@ -1,19 +1,25 @@
+import APIResponse from "../helpers/APIResponse";
 import MessageModel from "../models/message-model";
 
 class MessageService {
   async getMany(filter) {
     try {
       return await MessageModel.find(filter)
+        .where({ isReply: false })
         .limit(100)
         .sort({ createdAt: -1 })
         .populate("user", "name")
         .populate({
-          path: "replyOf",
+          path: "replies",
           populate: { path: "user", select: "name" },
         });
     } catch (err) {
       return err;
     }
+  }
+
+  async getOne(filter) {
+    return await MessageModel.findOne(filter);
   }
 
   async create(data) {
