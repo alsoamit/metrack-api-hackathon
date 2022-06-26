@@ -176,6 +176,7 @@ class AuthController {
       if (!user) {
         return APIResponse.validationError(res, "user not found");
       }
+
       const match = await hashService.compare(password, user.password);
       if (!match) {
         return APIResponse.validationError(res, "wrong credentials");
@@ -300,6 +301,33 @@ class AuthController {
       );
       return APIResponse.successResponse(res, "password changed");
     } catch (err) {
+      return APIResponse.errorResponse(res);
+    }
+  }
+
+  async updatePassword(req, res) {
+    try {
+      const { oldPassword, newPassword } = req.body;
+      let user = req.user;
+      user = await userService.findUser({ _id: req.user._id });
+      if (!user) {
+        return APIResponse.validationError(res, "user not found");
+      }
+      const match = await hashService.compare(oldPassword, user.password);
+      if (!match) {
+        return APIResponse.validationError(res, "wrong credentials");
+      }
+      const hash = await hashService.encrypt(newPassword);
+      user.password = hash;
+      await user.save();
+      await mailService.send(
+        user.email,
+        "Password changed",
+        `Password changed for ${user.email}`
+      );
+      return APIResponse.successResponse(res, "password changed");
+    } catch (err) {
+      console.log(err);
       return APIResponse.errorResponse(res);
     }
   }

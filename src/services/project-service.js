@@ -3,13 +3,13 @@ import ProjectModel from "../models/project-model";
 class ProjectService {
   async getMany(filter) {
     try {
-      const discussion = await ProjectModel.find(filter)
-        .sort("date")
+      const projects = await ProjectModel.find(filter)
+        .sort({ createdAt: -1 })
         .limit(20)
         .populate("userId", "name")
         .populate("feedbacks.user", "name")
         .lean();
-      return discussion;
+      return projects;
     } catch (err) {
       return err;
     }
@@ -26,9 +26,9 @@ class ProjectService {
   async getOneWithoutPopulation(filter) {
     console.log(filter);
     try {
-      const discussion = await ProjectModel.findOne(filter);
-      console.log(discussion, "from service");
-      return discussion;
+      const projects = await ProjectModel.findOne(filter);
+      console.log(projects, "from service");
+      return projects;
     } catch (err) {
       return err;
     }

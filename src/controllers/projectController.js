@@ -1,5 +1,6 @@
 import APIResponse from "../helpers/APIResponse";
 import projectService from "../services/project-service";
+import { Types } from "mongoose";
 
 class ProjectController {
   async addProject(req, res) {
@@ -54,8 +55,11 @@ class ProjectController {
   }
 
   async getProjects(req, res) {
+    console.log("getting projects");
     try {
-      let projects = await projectService.getMany({ user: req.user._id });
+      let projects = await projectService.getMany({
+        userId: Types.ObjectId(req.user._id),
+      });
       return APIResponse.successResponseWithData(res, projects);
     } catch (err) {
       return APIResponse.errorResponse(res, err);

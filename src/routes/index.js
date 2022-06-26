@@ -22,6 +22,11 @@ router.post("/api/reset-password", authController.resetPassword);
 router.post("/api/validate-magictoken", authController.magicTokenValidation);
 router.get("/api/verify-email", authenticate, verifyEmailController.sendLink);
 router.post("/api/verify-email", verifyEmailController.verify);
+router.post(
+  "/api/update-password",
+  authenticate,
+  authController.updatePassword
+);
 
 // ADMIN AUTH
 router.post("/api/admin/login", authController.adminLogin);
@@ -98,6 +103,11 @@ router.put(
 );
 
 // COURSES (USER)
+router.get(
+  "/api/get-enrolled-courses",
+  authenticate,
+  courseController.getEnrolledCourses
+);
 router.get("/api/get-all-course", courseController.getPublishedCourses);
 router.get("/api/get-course/:id", courseController.getCourseById);
 router.get(
