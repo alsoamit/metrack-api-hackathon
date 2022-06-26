@@ -8,9 +8,6 @@ class ProjectController {
       let { title, courseId, description, url, githubUrl, webUrl, tags } =
         req.body;
       let user = req.user;
-      if (!title || !courseId || !description) {
-        return APIResponse.validationError(res, "all fields are required");
-      }
       let project = await projectService.create({
         title,
         userId: user._id,

@@ -8,7 +8,6 @@ import mailService from "../services/mail-service";
 import hashService from "../services/hash-service";
 
 class AuthController {
-
   async refresh(req, res) {
     // getrefresh token from header
     const { metrackRefreshCookie: refreshTokenFromCookie } = req.cookies;
@@ -71,10 +70,6 @@ class AuthController {
   async registerUser(req, res) {
     const { name, email, password } = req.body;
 
-    if (!name || !password || !email) {
-      return APIResponse.unauthorizedResponse(res, "All Fields are required");
-    }
-
     try {
       let user = await userService.findUser({ email });
 
@@ -118,7 +113,6 @@ class AuthController {
 
       user.password = "";
       return APIResponse.successResponseWithData(res, user, "account created");
-
     } catch (err) {
       return APIResponse.errorResponse(res);
     }
@@ -126,11 +120,6 @@ class AuthController {
 
   async adminLogin(req, res) {
     const { email, password } = req.body;
-
-    if (!password || !email) {
-      return APIResponse.validationError(res, "All Fields are required");
-    }
-
     try {
       let user = await userService.findUser({ email });
 
@@ -166,11 +155,6 @@ class AuthController {
 
   async loginUser(req, res) {
     const { email, password } = req.body;
-
-    if (!password || !email) {
-      return APIResponse.validationError(res, "All Fields are required");
-    }
-
     try {
       let user = await userService.findUser({ email });
 
@@ -210,13 +194,6 @@ class AuthController {
   async requestPasswordReset(req, res) {
     try {
       const { email } = req.body;
-      if (!email) {
-        return APIResponse.validationErrorWithData(
-          res,
-          req.body,
-          "All Fields are required"
-        );
-      }
       const user = await userService.findUser({ email });
       if (!user) {
         return APIResponse.notFoundResponse(res, "user not found");
