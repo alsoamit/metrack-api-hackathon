@@ -3,7 +3,7 @@ import { Types, Schema, model } from "mongoose";
 const CourseSchema = new Schema(
   {
     name: { type: String },
-    students: [{ type: String }],
+    students: [{ type: Types.ObjectId, ref: 'User' }],
     channel: { type: String },
     description: { type: String },
     category: { type: String },
