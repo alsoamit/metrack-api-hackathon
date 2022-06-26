@@ -2,8 +2,9 @@ import CourseModel from "../models/course-model";
 
 class CourseService {
   async findCourse(filter) {
+    console.log(filter);
     try {
-      const course = await CourseModel.findOne(filter).lean();
+      const course = await CourseModel.findOne(filter);
       return course;
     } catch (err) {
       return err;
@@ -11,7 +12,9 @@ class CourseService {
   }
 
   async getAllCourses(filter) {
-    const courses = await CourseModel.find(filter);
+    console.log(filter, "from get all courses");
+    const courses = await CourseModel.find(filter).limit(100).sort("date");
+    console.log({ courses });
     return courses;
   }
 

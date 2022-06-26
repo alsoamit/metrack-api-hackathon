@@ -3,6 +3,8 @@ import APIResponse from "../helpers/APIResponse";
 import discussionService from "../services/discussion-service";
 import userService from "../services/user-service";
 import projectService from "../services/project-service";
+import courseService from "../services/course-service";
+import mongoose from "mongoose";
 
 class CourseController {
   async addCourse(req, res) {
@@ -65,8 +67,11 @@ class CourseController {
       course.discussionId = discussion._id;
       course.save();
 
-      console.log(discussion, course);
-      return APIResponse.successResponseWithData(res, course, "course created");
+      return APIResponse.successResponseWithData(
+        res,
+        course.toObject(),
+        "course created"
+      );
     } catch (err) {
       console.log(err);
       return APIResponse.errorResponse(res);
@@ -154,12 +159,11 @@ class CourseController {
         return APIResponse.notFoundResponse(res);
       }
       const projects = await projectService.getMany({ courseId: course._id });
-      console.log({ projects });
       if (!projects) {
         projects = [];
       }
       const data = {
-        ...course,
+        ...course.toObject(),
         projects: projects,
       };
       return APIResponse.successResponseWithData(res, data);
@@ -248,13 +252,12 @@ class CourseController {
   }
 
   async getEnrolledCourses(req, res) {
-    const { _id } = req.user;
-
+    let user = req.user;
     try {
-      let user = await userService.findUser({ _id });
-      course.students.push(_id);
-      await course.save();
-      return APIResponse.successResponseWithData(res, course, "Enrolled 🎉");
+      let courses = await courseService.getAllCourses({
+        students: mongoose.Types.ObjectId(user._id),
+      });
+      return APIResponse.successResponseWithData(res, courses);
     } catch (err) {
       console.log(err);
       return APIResponse.errorResponse(res);
