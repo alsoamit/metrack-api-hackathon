@@ -5,19 +5,18 @@ import { Types } from "mongoose";
 class ProjectController {
   async addProject(req, res) {
     try {
-      let { title, courseId, description, thumbnail, githubUrl, webUrl, tags } =
+      let { title, courseId, description, url, githubUrl, webUrl, tags } =
         req.body;
       let user = req.user;
       if (!title || !courseId || !description) {
         return APIResponse.validationError(res, "all fields are required");
       }
-      console.log({ tags });
       let project = await projectService.create({
         title,
         userId: user._id,
         courseId,
         description,
-        thumbnail,
+        thumbnail: url,
         githubUrl,
         webUrl,
         tags,

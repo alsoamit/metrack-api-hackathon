@@ -8,6 +8,7 @@ import mailService from "../services/mail-service";
 import hashService from "../services/hash-service";
 
 class AuthController {
+
   async refresh(req, res) {
     // getrefresh token from header
     const { metrackRefreshCookie: refreshTokenFromCookie } = req.cookies;
@@ -181,6 +182,11 @@ class AuthController {
       if (!match) {
         return APIResponse.validationError(res, "wrong credentials");
       }
+
+      if (!user.verified) {
+        return APIResponse.validationError(res, "email not verified");
+      }
+
       // generate new token
       const { accessToken, refreshToken } = tokenService.generateToken({
         _id: user._id,
