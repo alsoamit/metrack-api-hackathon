@@ -7,13 +7,14 @@ import discussionsController from "../controllers/discussionsController";
 import messageController from "../controllers/messageController";
 import projectController from "../controllers/projectController";
 import verifyEmailController from "../controllers/verify-email-controller";
-import APIResponse from "../helpers/APIResponse";
 import verifyAdmin from "../middleware/admin-middleware";
 import authenticate from "../middleware/auth-middleware";
 
 const router = Router();
 
 // AUTH
+router.post("/api/register", authController.registerUser);
+router.post("/api/login", authController.loginUser);
 router.get("/api/refresh", authController.refresh);
 router.post("/api/logout", authenticate, authController.logout);
 router.post("/api/request-password-reset", authController.requestPasswordReset);
@@ -51,10 +52,6 @@ router.get(
 // MESSAGES
 router.post("/api/messages", authenticate, messageController.addMessage);
 router.post("/api/reply/", authenticate, messageController.addReply);
-
-// TEMPALTE AUTH
-router.post("/api/register", authController.registerUser);
-router.post("/api/login", authController.loginUser);
 
 // COURSES (ADMIN)
 router.post(

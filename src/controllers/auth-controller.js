@@ -76,20 +76,27 @@ class AuthController {
 
     try {
       let user = await userService.findUser({ email });
+
       let hashedPassword = await hashService.encrypt(password);
+
       if (user) {
         return APIResponse.validationError(res, "user already exists");
       }
+
       user = await userService.createUser({
         name,
         email,
         password: hashedPassword,
       });
+
       const { resetToken, token } = await magicTokenService.generate(user._id);
+
       if (!resetToken) {
         return APIResponse.errorResponse(res, "internal server error");
       }
+
       const link = `${process.env.CLIENT_URL}/auth/verify-email/?userId=${user._id}&token=${resetToken}`;
+
       // send the email template
       const data = await ejs.renderFile(
         __dirname + "/../mails/verify-email.ejs",
@@ -99,7 +106,7 @@ class AuthController {
 
       const emailSent = await mailService.send(
         user.email,
-        "Email Verification",
+        "Check your mail",
         data
       );
 
@@ -110,6 +117,7 @@ class AuthController {
 
       user.password = "";
       return APIResponse.successResponseWithData(res, user, "account created");
+
     } catch (err) {
       return APIResponse.errorResponse(res);
     }
