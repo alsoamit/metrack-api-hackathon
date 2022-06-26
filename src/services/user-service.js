@@ -23,6 +23,10 @@ class UserService {
   async updateUser(filter, data) {
     return await UserModel.updateOne(filter, data, { new: true });
   }
+
+  async deleteOne(filter) {
+    return await UserModel.deleteOne(filter);
+  }
 }
 
 export default new UserService();

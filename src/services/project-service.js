@@ -1,0 +1,51 @@
+import ProjectModel from "../models/project-model";
+
+class ProjectService {
+  async getMany(filter) {
+    try {
+      const projects = await ProjectModel.find(filter)
+        .sort({ createdAt: -1 })
+        .limit(20)
+        .populate("userId", "name")
+        .populate("feedbacks.user", "name")
+        .lean();
+      return projects;
+    } catch (err) {
+      return err;
+    }
+  }
+
+  async getOne(filter) {
+    try {
+      return await ProjectModel.findOne(filter);
+    } catch (err) {
+      return err;
+    }
+  }
+
+  async getOneWithoutPopulation(filter) {
+    console.log(filter);
+    try {
+      const projects = await ProjectModel.findOne(filter);
+      console.log(projects, "from service");
+      return projects;
+    } catch (err) {
+      return err;
+    }
+  }
+
+  async create(data) {
+    const project = await ProjectModel.create(data);
+    return project;
+  }
+
+  async update(filter, data) {
+    return await ProjectModel.updateOne(filter, data, { new: true });
+  }
+
+  async deleteOne(filter) {
+    return await ProjectModel.deleteOne(filter);
+  }
+}
+
+export default new ProjectService();

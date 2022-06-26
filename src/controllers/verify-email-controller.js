@@ -80,10 +80,8 @@ class VerifyEmailController {
         "Email verified",
         `Your email ${user.email} is verified.`
       );
-      return res.redirect(`${process.env.CLIENT_URL}/auth/verified`);
+      return APIResponse.successResponse(res, "Email Verifed")
     } catch (err) {
-      //
-
       return APIResponse.errorResponse(res);
     }
   }

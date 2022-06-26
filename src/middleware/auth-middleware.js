@@ -6,7 +6,7 @@ async function authenticate(req, res, next) {
     const { metrackAccessCookie } = req.cookies;
 
     if (!metrackAccessCookie) {
-      return APIResponse.validationErrorWithData(res, "invalid token", null);
+      return APIResponse.validationErrorWithData(res, "invalid token", "sign in to view");
     }
 
     const userData = await tokenService.verifyAccessToken(metrackAccessCookie);
