@@ -5,6 +5,7 @@ import channelController from "../controllers/channel-controller";
 import courseController from "../controllers/course-controller";
 import discussionsController from "../controllers/discussionsController";
 import messageController from "../controllers/messageController";
+import profileController from "../controllers/profile-controller";
 import projectController from "../controllers/projectController";
 import verifyEmailController from "../controllers/verify-email-controller";
 import verifyAdmin from "../middleware/admin-middleware";
@@ -13,6 +14,7 @@ import { validate } from "../middleware/validate-request";
 import auth from "../validators/auth";
 import commons from "../validators/commons";
 import message from "../validators/message";
+import profile from "../validators/profile";
 import project from "../validators/project";
 
 const router = Router();
@@ -159,6 +161,17 @@ router.get(
   "/api/get-enroll-course",
   authenticate,
   courseController.enrollCourse
+);
+
+// PROFILE
+router.post("/api/profile/:id", profileController.getProfile);
+
+router.put(
+  "/api/profile",
+  profile.update,
+  validate,
+  authenticate,
+  profileController.update
 );
 
 // PROJECTS

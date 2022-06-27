@@ -12,9 +12,15 @@ require("dotenv").config();
 
 const app = express();
 const httpServer = createServer(app);
+
 export const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENT_URL,
+    origin: [
+      process.env.CLIENT_URL,
+      "http://localhost:4000",
+      "https://metrack.tech",
+      "https://www.metrack.tech",
+    ],
     methods: ["GET", "POST"],
   },
 });
@@ -32,6 +38,9 @@ const corsOption = {
     "https://api.metrack.tech",
     "http://localhost:3000",
     "http://localhost:4000",
+    "https://metrack.tech",
+    "https://www.metrack.tech",
+    "https://admin.metrack.tech",
   ],
 };
 
