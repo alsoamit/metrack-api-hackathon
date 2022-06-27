@@ -7,6 +7,7 @@ class CourseService {
       const course = await CourseModel.findOne(filter);
       return course;
     } catch (err) {
+      console.log(err);
       return err;
     }
   }

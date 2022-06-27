@@ -14,6 +14,7 @@ class MessageService {
           populate: { path: "user", select: "name" },
         });
     } catch (err) {
+      console.log(err);
       return err;
     }
   }

@@ -17,6 +17,7 @@ class AuthController {
     try {
       userData = await tokenService.verifyRefreshToken(refreshTokenFromCookie);
     } catch (err) {
+      console.log(err);
       return APIResponse.unauthorizedResponse(res, "invalid token");
     }
 
@@ -30,6 +31,7 @@ class AuthController {
         return APIResponse.unauthorizedResponse(res, "invalid token");
       }
     } catch (err) {
+      console.log(err);
       return APIResponse.errorResponse(res);
     }
 
@@ -49,6 +51,7 @@ class AuthController {
     try {
       tokenService.updateRefreshToken(userData._id, refreshToken);
     } catch (err) {
+      console.log(err);
       return APIResponse.errorResponse(res);
     }
 
@@ -114,6 +117,7 @@ class AuthController {
       user.password = "";
       return APIResponse.successResponseWithData(res, user, "account created");
     } catch (err) {
+      console.log(err);
       return APIResponse.errorResponse(res);
     }
   }
@@ -149,6 +153,7 @@ class AuthController {
       user.password = "";
       return APIResponse.successResponseWithData(res, user, "logged in");
     } catch (err) {
+      console.log(err);
       return APIResponse.errorResponse(res);
     }
   }
@@ -187,6 +192,7 @@ class AuthController {
       user.password = "";
       return APIResponse.successResponseWithData(res, user, "logged in");
     } catch (err) {
+      console.log(err);
       return APIResponse.errorResponse(res);
     }
   }
@@ -251,7 +257,7 @@ class AuthController {
 
       return APIResponse.successResponse(res, "valid token");
     } catch (err) {
-      //
+      console.log(err);
       return APIResponse.errorResponse(res);
     }
   }
@@ -284,6 +290,7 @@ class AuthController {
       );
       return APIResponse.successResponse(res, "password changed");
     } catch (err) {
+      console.log(err);
       return APIResponse.errorResponse(res);
     }
   }

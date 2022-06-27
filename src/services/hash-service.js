@@ -5,6 +5,7 @@ class HashService {
     try {
       return await bcrypt.hash(payload, 10);
     } catch (err) {
+      console.log(err);
       return err;
     }
   }

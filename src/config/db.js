@@ -19,7 +19,7 @@ const DBConnect = async () => {
       console.log("MongoDB connected...");
     }
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
     process.exit(1);
   }
 };
