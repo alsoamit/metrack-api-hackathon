@@ -14,18 +14,18 @@ const app = express();
 const httpServer = createServer(app);
 export const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_URL,
     methods: ["GET", "POST"],
   },
 });
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
+
 const corsOption = {
   credentials: true,
   origin: [
-    "http://localhost:3000",
+    process.env.CLIENT_URL,
     "http://localhost:4000",
-    "http://localhost:3001",
   ],
 };
 
