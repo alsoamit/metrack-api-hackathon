@@ -74,6 +74,8 @@ class ProfileController {
       return APIResponse.errorResponse(res, err);
     }
   }
+
+
 }
 
 export default new ProfileController();

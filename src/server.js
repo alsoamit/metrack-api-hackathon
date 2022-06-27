@@ -17,6 +17,7 @@ export const io = new Server(httpServer, {
   cors: {
     origin: [
       process.env.CLIENT_URL,
+      "http://localhost:3000",
       "http://localhost:4000",
       "https://metrack.tech",
       "https://www.metrack.tech",

@@ -165,6 +165,7 @@ router.get(
 
 // PROFILE
 router.post("/api/profile/:id", profileController.getProfile);
+router.post("/api/set-avatar", authController.updateAvatar);
 
 router.put(
   "/api/profile",
