@@ -44,6 +44,7 @@ class VerifyEmailController {
 
       return APIResponse.successResponseWithData(res, user.email, "email sent");
     } catch (err) {
+      console.log(err);
       return APIResponse.errorResponse(res, "error in verification");
     }
   }
@@ -82,6 +83,7 @@ class VerifyEmailController {
       );
       return APIResponse.successResponse(res, "Email Verifed")
     } catch (err) {
+      console.log(err);
       return APIResponse.errorResponse(res);
     }
   }

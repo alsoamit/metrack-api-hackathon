@@ -135,6 +135,7 @@ class CourseController {
       let course = await CourseService.deleteCourse(id);
       return APIResponse.successResponseWithData(res, course, "course deleted");
     } catch (err) {
+      console.log(err);
       return APIResponse.errorResponse(res, err);
     }
   }

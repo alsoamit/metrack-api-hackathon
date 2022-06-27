@@ -6,6 +6,7 @@ class UserService {
       const users = await UserModel.findOne(filter);
       return users;
     } catch (err) {
+      console.log(err);
       return err;
     }
   }

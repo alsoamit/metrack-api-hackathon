@@ -11,7 +11,7 @@ async function verifyAdmin(req, res, next) {
     }
     return APIResponse.unauthorizedResponse(res, "invalid admin");
   } catch (err) {
-    console.log({ err });
+    console.log(err);
     return APIResponse.unauthorizedResponse(res);
   }
 }

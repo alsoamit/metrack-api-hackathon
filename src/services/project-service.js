@@ -11,6 +11,7 @@ class ProjectService {
         .lean();
       return projects;
     } catch (err) {
+      console.log(err);
       return err;
     }
   }
@@ -19,6 +20,7 @@ class ProjectService {
     try {
       return await ProjectModel.findOne(filter);
     } catch (err) {
+      console.log(err);
       return err;
     }
   }
@@ -30,6 +32,7 @@ class ProjectService {
       console.log(projects, "from service");
       return projects;
     } catch (err) {
+      console.log(err);
       return err;
     }
   }

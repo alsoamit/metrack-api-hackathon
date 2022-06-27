@@ -6,6 +6,7 @@ class ChannelService {
             const channel = await ChannelModel.findOne(filter);
             return channel;
         } catch (err) {
+            console.log(err);
             return err;
         }
     }
