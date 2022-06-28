@@ -8,10 +8,10 @@ class MessageService {
         .where({ isReply: false })
         .limit(100)
         .sort({ createdAt: -1 })
-        .populate("user", "name")
+        .populate("user", "name avatar")
         .populate({
           path: "replies",
-          populate: { path: "user", select: "name" },
+          populate: { path: "user", select: "name avatar" },
         });
     } catch (err) {
       console.log(err);

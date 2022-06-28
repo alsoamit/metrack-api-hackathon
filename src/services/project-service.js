@@ -6,8 +6,8 @@ class ProjectService {
       const projects = await ProjectModel.find(filter)
         .sort({ createdAt: -1 })
         .limit(20)
-        .populate("userId", "name")
-        .populate("feedbacks.user", "name")
+        .populate("userId", "name avatar")
+        .populate("feedbacks.user", "name avatar")
         .lean();
       return projects;
     } catch (err) {
