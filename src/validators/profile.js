@@ -11,7 +11,7 @@ const update = [
     .isLength({ min: 0, max: 30 })
     .withMessage("linkedin username is too long"),
   body("about")
-    .isLength({ min: 1, max: 600 })
+    .isLength({ min: 1, max: 2000 })
     .withMessage("about description is too long"),
 ];
 
