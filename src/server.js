@@ -30,7 +30,13 @@ const PORT = process.env.PORT || 5000;
 const corsOption = {
   credentials: true,
   origin: [
-    process.env.CLIENT_URL,
+    "https://metrack.tech",
+    "https://www.metrack.tech",
+    "https://www.admin.metrack.tech",
+    "https://admin.metrack.tech",
+    "https://www.api.metrack.tech",
+    "https://api.metrack.tech",
+    "http://localhost:3000",
     "http://localhost:4000",
     "https://metrack.tech",
     "https://www.metrack.tech",

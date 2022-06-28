@@ -9,6 +9,7 @@ class DiscussionService {
         .populate("chat");
       return discussion;
     } catch (err) {
+      console.log(err);
       return err;
     }
   }
@@ -17,6 +18,7 @@ class DiscussionService {
     try {
       return await DiscussionModel.findOne(filter).lean();
     } catch (err) {
+      console.log(err);
       return err;
     }
   }
@@ -28,6 +30,7 @@ class DiscussionService {
       console.log(discussion, "from service");
       return discussion;
     } catch (err) {
+      console.log(err);
       return err;
     }
   }
