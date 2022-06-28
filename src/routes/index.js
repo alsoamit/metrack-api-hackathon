@@ -55,7 +55,7 @@ router.post(
 // ADMIN AUTH
 router.post(
   "/api/admin/login",
-  auth.register,
+  auth.login,
   validate,
   authController.adminLogin
 );
