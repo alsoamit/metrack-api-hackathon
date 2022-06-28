@@ -7,9 +7,10 @@ import userService from "../services/user-service";
 class MessageController {
   async addMessage(req, res) {
     try {
+
       const user = req.user;
       let { message, discussionId, sender } = req.body;
-      console.log(discussionId, "did");
+
       if (!user) {
         return APIResponse.notFoundResponse(res, "invalid user");
       }
@@ -26,6 +27,7 @@ class MessageController {
         message,
         discussionId: discussion._id,
         user: user._id,
+        avatar: user.avatar
       });
 
       io.to(discussionId).emit("update:message", {
@@ -72,6 +74,7 @@ class MessageController {
         discussionId,
         user: user._id,
         isReply: true,
+        avatar: user.avatar
       });
 
       if (!savedData) {

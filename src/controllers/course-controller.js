@@ -157,7 +157,7 @@ class CourseController {
       const course = await CourseService.findCourse({ _id: id });
 
       if (!course) {
-        return APIResponse.notFoundResponse(res);
+        return APIResponse.notFoundResponse(res, "Not Found");
       }
       const projects = await projectService.getMany({ courseId: course._id });
       if (!projects) {

@@ -88,31 +88,45 @@ class AuthController {
         password: hashedPassword,
       });
 
-      const { resetToken, token } = await magicTokenService.generate(user._id);
+      // const { resetToken, token } = await magicTokenService.generate(user._id);
 
-      if (!resetToken) {
-        return APIResponse.errorResponse(res, "internal server error");
-      }
+      // if (!resetToken) {
+      //   return APIResponse.errorResponse(res, "internal server error");
+      // }
 
-      const link = `${process.env.CLIENT_URL}/auth/verify-email/?userId=${user._id}&token=${resetToken}`;
+      // const link = `${process.env.CLIENT_URL}/auth/verify-email/?userId=${user._id}&token=${resetToken}`;
 
-      // send the email template
-      const data = await ejs.renderFile(
-        __dirname + "/../mails/verify-email.ejs",
-        { email: user.email, name: user.name, link },
-        { async: true }
-      );
+      // // send the email template
+      // const data = await ejs.renderFile(
+      //   __dirname + "/../mails/verify-email.ejs",
+      //   { email: user.email, name: user.name, link },
+      //   { async: true }
+      // );
 
-      const emailSent = await mailService.send(
-        user.email,
-        "Check your mail",
-        data
-      );
+      // const emailSent = await mailService.send(
+      //   user.email,
+      //   "Check your mail",
+      //   data
+      // );
 
-      if (!emailSent) {
-        await magicTokenService.remove(token);
+      // if (!emailSent) {
+      //   await magicTokenService.remove(token);
+      //   return APIResponse.errorResponse(res);
+      // }
+
+      // generate new token
+      const { accessToken, refreshToken } = tokenService.generateToken({
+        _id: user._id,
+        role: user.role,
+      });
+
+      // save refresh token in db
+      const savedToken = tokenService.storeRefreshToken(user._id, refreshToken);
+      if (!savedToken) {
         return APIResponse.errorResponse(res);
       }
+
+      setTokensInCookie(res, { accessToken, refreshToken });
 
       user.password = "";
       return APIResponse.successResponseWithData(res, user, "account created");
@@ -170,10 +184,6 @@ class AuthController {
       const match = await hashService.compare(password, user.password);
       if (!match) {
         return APIResponse.validationError(res, "wrong credentials");
-      }
-
-      if (!user.verified) {
-        return APIResponse.validationError(res, "email not verified");
       }
 
       // generate new token
@@ -316,6 +326,25 @@ class AuthController {
         `Password changed for ${user.email}`
       );
       return APIResponse.successResponse(res, "password changed");
+    } catch (err) {
+      console.log(err);
+      return APIResponse.errorResponse(res);
+    }
+  }
+
+  async updateAvatar(req, res) {
+    const { id, url } = req.body;
+
+    try {
+      let user = await userService.findUser({ _id: id });
+
+      if (!user) {
+        return APIResponse.validationError(res, "user not found");
+      }
+      user.avatar = url;
+      await user.save();
+      return APIResponse.successResponseWithData(res, user, "updated successfully");
+
     } catch (err) {
       console.log(err);
       return APIResponse.errorResponse(res);
