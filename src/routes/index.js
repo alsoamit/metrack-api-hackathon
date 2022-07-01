@@ -21,146 +21,146 @@ const router = Router();
 
 // AUTH
 router.post(
-  "/api/register",
-  auth.register,
-  validate,
-  authController.registerUser
+    "/api/register",
+    auth.register,
+    validate,
+    authController.registerUser
 );
 router.post("/api/login", auth.login, validate, authController.loginUser);
 router.get("/api/refresh", authController.refresh);
 router.post("/api/logout", authenticate, authController.logout);
 router.post(
-  "/api/request-password-reset",
-  commons.email,
-  validate,
-  authController.requestPasswordReset
+    "/api/request-password-reset",
+    commons.email,
+    validate,
+    authController.requestPasswordReset
 );
 router.post(
-  "/api/reset-password",
-  commons.password,
-  validate,
-  authController.resetPassword
+    "/api/reset-password",
+    commons.password,
+    validate,
+    authController.resetPassword
 );
 router.post("/api/validate-magictoken", authController.magicTokenValidation);
 router.get("/api/verify-email", authenticate, verifyEmailController.sendLink);
 router.post("/api/verify-email", verifyEmailController.verify);
 router.post(
-  "/api/update-password",
-  auth.updatePassword,
-  validate,
-  authenticate,
-  authController.updatePassword
+    "/api/update-password",
+    auth.updatePassword,
+    validate,
+    authenticate,
+    authController.updatePassword
 );
 
 // ADMIN AUTH
 router.post(
-  "/api/admin/login",
-  auth.login,
-  validate,
-  authController.adminLogin
+    "/api/admin/login",
+    auth.login,
+    validate,
+    authController.adminLogin
 );
 router.post("/api/admin/logout", authController.logout);
 
 // ADMIN ROUTES
 router.post(
-  "/api/admin/get-users",
-  authenticate,
-  verifyAdmin,
-  adminController.getUsers
+    "/api/admin/get-users",
+    authenticate,
+    verifyAdmin,
+    adminController.getUsers
 );
 
 router.delete(
-  "/api/admin/delete-user/:id",
-  authenticate,
-  verifyAdmin,
-  adminController.deleteUser
+    "/api/admin/delete-user/:id",
+    authenticate,
+    verifyAdmin,
+    adminController.deleteUser
 );
 
 // DISCUSSIONS
 router.get(
-  "/api/discussions/:id",
-  authenticate,
-  discussionsController.getDiscussionById
+    "/api/discussions/:id",
+    authenticate,
+    discussionsController.getDiscussionById
 );
 
 // MESSAGES
 router.post(
-  "/api/messages",
-  message.string,
-  validate,
-  authenticate,
-  messageController.addMessage
+    "/api/messages",
+    message.string,
+    validate,
+    authenticate,
+    messageController.addMessage
 );
 
 router.post(
-  "/api/reply/",
-  message.reply,
-  validate,
-  authenticate,
-  messageController.addReply
+    "/api/reply/",
+    message.reply,
+    validate,
+    authenticate,
+    messageController.addReply
 );
 
 // COURSES (ADMIN)
 router.post(
-  "/api/admin/add-courses",
-  authenticate,
-  verifyAdmin,
-  courseController.addCourse
+    "/api/admin/add-courses",
+    authenticate,
+    verifyAdmin,
+    courseController.addCourse
 );
 router.delete(
-  "/api/admin/delete-course/:id",
-  authenticate,
-  verifyAdmin,
-  courseController.deleteCourse
+    "/api/admin/delete-course/:id",
+    authenticate,
+    verifyAdmin,
+    courseController.deleteCourse
 );
 router.post(
-  "/api/admin/edit-courses",
-  authenticate,
-  verifyAdmin,
-  courseController.editCourse
+    "/api/admin/edit-courses",
+    authenticate,
+    verifyAdmin,
+    courseController.editCourse
 );
 router.get(
-  "/api/admin/get-all-course",
-  authenticate,
-  verifyAdmin,
-  courseController.getAllCourses
+    "/api/admin/get-all-course",
+    authenticate,
+    verifyAdmin,
+    courseController.getAllCourses
 );
 router.get(
-  "/api/admin/get-course/:id",
-  authenticate,
-  verifyAdmin,
-  courseController.getCourseById
+    "/api/admin/get-course/:id",
+    authenticate,
+    verifyAdmin,
+    courseController.getCourseById
 );
 router.put(
-  "/api/admin/publish-course/:id",
-  authenticate,
-  verifyAdmin,
-  courseController.publishCourse
+    "/api/admin/publish-course/:id",
+    authenticate,
+    verifyAdmin,
+    courseController.publishCourse
 );
 router.put(
-  "/api/admin/unpublish-course/:id",
-  authenticate,
-  verifyAdmin,
-  courseController.unPublishCourse
+    "/api/admin/unpublish-course/:id",
+    authenticate,
+    verifyAdmin,
+    courseController.unPublishCourse
 );
 
 // COURSES (USER)
 router.get(
-  "/api/get-enrolled-courses",
-  authenticate,
-  courseController.getEnrolledCourses
+    "/api/get-enrolled-courses",
+    authenticate,
+    courseController.getEnrolledCourses
 );
 router.get("/api/get-all-course", courseController.getPublishedCourses);
 router.get("/api/get-course/:id", courseController.getCourseById);
 router.get(
-  "/api/enroll-course/:id",
-  authenticate,
-  courseController.enrollCourse
+    "/api/enroll-course/:id",
+    authenticate,
+    courseController.enrollCourse
 );
 router.get(
-  "/api/get-enroll-course",
-  authenticate,
-  courseController.enrollCourse
+    "/api/get-enroll-course",
+    authenticate,
+    courseController.enrollCourse
 );
 
 // PROFILE
@@ -168,48 +168,48 @@ router.post("/api/profile/:id", profileController.getProfile);
 router.post("/api/set-avatar", authController.updateAvatar);
 
 router.put(
-  "/api/profile",
-  profile.update,
-  validate,
-  authenticate,
-  profileController.update
+    "/api/profile",
+    profile.update,
+    validate,
+    authenticate,
+    profileController.update
 );
 
 // PROJECTS
 router.post(
-  "/api/projects",
-  project.projectSchema,
-  validate,
-  authenticate,
-  projectController.addProject
+    "/api/projects",
+    project.projectSchema,
+    validate,
+    authenticate,
+    projectController.addProject
 );
 router.get("/api/projects", authenticate, projectController.getProjects);
 router.post(
-  "/api/addFeedback",
-  project.feedback,
-  validate,
-  authenticate,
-  projectController.addFeedback
+    "/api/addFeedback",
+    project.feedback,
+    validate,
+    authenticate,
+    projectController.addFeedback
 );
 
 // CHANNELS (ADMIN)
 router.post(
-  "/api/admin/add-channel",
-  authenticate,
-  verifyAdmin,
-  channelController.addChannel
+    "/api/admin/add-channel",
+    authenticate,
+    verifyAdmin,
+    channelController.addChannel
 );
 router.get(
-  "/api/admin/get-channel/:id",
-  authenticate,
-  verifyAdmin,
-  channelController.getChannelById
+    "/api/admin/get-channel/:id",
+    authenticate,
+    verifyAdmin,
+    channelController.getChannelById
 );
 router.get(
-  "/api/admin/get-all-channel",
-  authenticate,
-  verifyAdmin,
-  channelController.getAllChannels
+    "/api/admin/get-all-channel",
+    authenticate,
+    verifyAdmin,
+    channelController.getAllChannels
 );
 
 export default router;

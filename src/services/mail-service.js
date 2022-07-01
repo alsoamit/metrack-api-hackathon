@@ -17,7 +17,7 @@ class MailService {
       return await transporter.sendMail({
         from: process.env.USER,
         to: email,
-        subject: subject,
+        subject,
         html: body,
       });
     } catch (error) {
