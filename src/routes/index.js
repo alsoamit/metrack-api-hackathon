@@ -13,6 +13,7 @@ import authenticate from "../middleware/auth-middleware";
 import { validate } from "../middleware/validate-request";
 import auth from "../validators/auth";
 import commons from "../validators/commons";
+import course from "../validators/course";
 import message from "../validators/message";
 import profile from "../validators/profile";
 import project from "../validators/project";
@@ -105,6 +106,8 @@ router.post(
     "/api/admin/add-courses",
     authenticate,
     verifyAdmin,
+    course.add,
+    validate,
     courseController.addCourse
 );
 router.delete(
@@ -117,6 +120,8 @@ router.post(
     "/api/admin/edit-courses",
     authenticate,
     verifyAdmin,
+    course.edit,
+    validate,
     courseController.editCourse
 );
 router.get(
@@ -183,6 +188,7 @@ router.post(
     authenticate,
     projectController.addProject
 );
+
 router.get("/api/projects", authenticate, projectController.getProjects);
 router.post(
     "/api/addFeedback",

@@ -22,25 +22,6 @@ class CourseController {
             aboutChannel,
         } = req.body;
 
-        if (
-            !name ||
-            !channel ||
-            !description ||
-            !thumbnail ||
-            !video ||
-            !channelImage ||
-            !tags ||
-            !level ||
-            !category ||
-            !domain ||
-            !aboutChannel
-        ) {
-            return APIResponse.unauthorizedResponse(
-                res,
-                "All Fields are required"
-            );
-        }
-
         try {
             let course = await courseService.findCourse({ name, channel });
             if (course) {
@@ -96,22 +77,6 @@ class CourseController {
             tags,
             level,
         } = req.body;
-
-        if (
-            !name ||
-            !channel ||
-            !description ||
-            !thumbnail ||
-            !video ||
-            !channelImage ||
-            !tags ||
-            !level
-        ) {
-            return APIResponse.unauthorizedResponse(
-                res,
-                "All Fields are required"
-            );
-        }
 
         try {
             let course = await courseService.findCourse({ _id: id });
