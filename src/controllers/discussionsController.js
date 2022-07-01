@@ -9,7 +9,7 @@ class DiscussionController {
       if (!id) {
         return APIResponse.validationError(res, "invalid id field");
       }
-      let discussion = await discussionService.getOne({ _id: id });
+      const discussion = await discussionService.getOne({ _id: id });
       if (!discussion) {
         return APIResponse.notFoundResponse(res, "discussion not available");
       }
@@ -35,7 +35,7 @@ class DiscussionController {
   async updateDiscussion(req, res) {
     try {
       const { id } = req.params;
-      let discussion = await discussionService.find({ _id: id });
+      const discussion = await discussionService.find({ _id: id });
       if (!discussion) {
         return APIResponse.notFoundResponse(res, "discussion not available");
       }
@@ -52,7 +52,7 @@ class DiscussionController {
   async banDiscussion(req, res) {
     try {
       const { id } = req.params;
-      let discussion = await discussionService.find({ _id: id });
+      const discussion = await discussionService.find({ _id: id });
       if (!discussion) {
         return APIResponse.notFoundResponse(res, "discussion not available");
       }
@@ -71,7 +71,7 @@ class DiscussionController {
   async setDiscussionReadOnly(req, res) {
     try {
       const { id } = req.params;
-      let discussion = await discussionService.find({ _id: id });
+      const discussion = await discussionService.find({ _id: id });
       if (!discussion) {
         return APIResponse.notFoundResponse(res, "discussion not available");
       }
@@ -90,7 +90,7 @@ class DiscussionController {
   async setDiscussionReadWrite(req, res) {
     try {
       const { id } = req.params;
-      let discussion = await discussionService.find({ _id: id });
+      const discussion = await discussionService.find({ _id: id });
       if (!discussion) {
         return APIResponse.notFoundResponse(res, "discussion not available");
       }

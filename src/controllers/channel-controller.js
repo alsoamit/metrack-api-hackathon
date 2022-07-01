@@ -3,7 +3,7 @@ import ChannelService from '../services/channel-service'
 
 class ChannelController {
     async addChannel(req, res) {
-        let {
+        const {
             channelName,
             channelImage,
             aboutChannel

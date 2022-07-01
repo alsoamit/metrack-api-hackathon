@@ -1,4 +1,4 @@
-import ChannelModel from '../models/channel-model';
+import ChannelModel from "../models/channel-model";
 
 class ChannelService {
     async findChannel(filter) {
@@ -12,22 +12,19 @@ class ChannelService {
     }
 
     async getAllChannels(filter) {
-        const channel = await ChannelModel.find(filter);
-        return channel;
+        return ChannelModel.find(filter);
     }
 
     async createChannel(data) {
-        const channel = await ChannelModel.create(data);
-        return channel;
+        return ChannelModel.create(data);
     }
 
     async deleteChannel(id) {
-        const channel = await ChannelModel.findByIdAndDelete(id);
-        return channel;
+        return ChannelModel.findByIdAndDelete(id);
     }
 
     async updateChannel(id, data) {
-        return await ChannelModel.findByIdAndUpdate(id, data, { new: true });
+        return ChannelModel.findByIdAndUpdate(id, data, { new: true });
     }
 }
 

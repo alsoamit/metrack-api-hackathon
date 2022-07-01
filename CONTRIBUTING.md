@@ -36,11 +36,15 @@ Description of the project files and directories.
 
 An explanation of the `package.json` scripts.
 
-| Command         | Description                                   |
-| --------------- | ----------------------------------------------|
-| `dev`           | Run MeTrack API in a development environment  |
-| `build`         | Compile source directory using babel          |
-| `start`         | Start MeTrack API in production               |
-| `serve`         | Start MeTrack API in production               |
-| `restart`       | Clean dist and restart MeTrack API            |
-| `clean`         | Clean dist directory                          |
+| Command        | Description                                  |
+| -------------- | -------------------------------------------- |
+| `dev`          | Run MeTrack API in a development environment |
+| `start`        | Start MeTrack API in production              |
+| `restart`      | Clean dist and restart MeTrack API           |
+| `build`        | Compile source directory using babel         |
+| `build:babel`  | Compile src into dist using babel            |
+| `clean`        | Clean dist directory                         |
+| `format:check` | Check formatting errors using preetier       |
+| `format:fix`   | Fix formatting errors using preetier         |
+| `lint:check`   | Check linting errors using eslint            |
+| `lint:fix`     | Fix linting errors using eslint              |

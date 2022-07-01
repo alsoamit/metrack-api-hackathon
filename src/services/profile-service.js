@@ -1,23 +1,23 @@
 import ProfileModel from "../models/profile-model";
 
 class ProfileService {
-  async findOne(filter) {
-    try {
-      const users = await ProfileModel.findOne(filter);
-      return users;
-    } catch (err) {
-      return err;
+    async findOne(filter) {
+        try {
+            const users = await ProfileModel.findOne(filter);
+            return users;
+        } catch (err) {
+            return err;
+        }
     }
-  }
 
-  async addOne(data) {
-    console.log(data);
-    return await ProfileModel.create(data);
-  }
+    async addOne(data) {
+        console.log(data);
+        return ProfileModel.create(data);
+    }
 
-  async updateOne(filter, data) {
-    return await ProfileModel.updateOne(filter, data, { new: true });
-  }
+    async updateOne(filter, data) {
+        return ProfileModel.updateOne(filter, data, { new: true });
+    }
 }
 
 export default new ProfileService();
