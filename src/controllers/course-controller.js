@@ -5,6 +5,7 @@ import APIResponse from "../helpers/APIResponse";
 import discussionService from "../services/discussion-service";
 import userService from "../services/user-service";
 import projectService from "../services/project-service";
+import profileService from "../services/profile-service";
 
 class CourseController {
     async addCourse(req, res) {
@@ -228,6 +229,12 @@ class CourseController {
             course.students.push(_id);
             await course.save();
             await user.save();
+
+            // update in profile also
+            const profile = await profileService.findOne({ user: _id });
+            profile.coursesEnrolled.push(id);
+            await profile.save();
+
             return APIResponse.successResponseWithData(
                 res,
                 user,

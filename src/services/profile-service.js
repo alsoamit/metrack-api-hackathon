@@ -3,15 +3,15 @@ import ProfileModel from "../models/profile-model";
 class ProfileService {
     async findOne(filter) {
         try {
-            const users = await ProfileModel.findOne(filter);
+            const users = await ProfileModel.findOne(filter).populate("coursesEnrolled");
             return users;
         } catch (err) {
+            console.log(err);
             return err;
         }
     }
 
     async addOne(data) {
-        console.log(data);
         return ProfileModel.create(data);
     }
 

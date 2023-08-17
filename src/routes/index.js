@@ -171,7 +171,7 @@ router.get(
 // PROFILE
 router.post("/api/profile/:id", profileController.getProfile);
 router.post("/api/set-avatar", authController.updateAvatar);
-
+router.post("/api/check-username", profileController.checkUsername);
 router.put(
     "/api/profile",
     profile.update,

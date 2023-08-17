@@ -6,6 +6,7 @@ import tokenService from "../services/token-service";
 import userService from "../services/user-service";
 import mailService from "../services/mail-service";
 import hashService from "../services/hash-service";
+import profileService from "../services/profile-service";
 
 function setTokensInCookie(res, token) {
     // put it in cookie
@@ -86,7 +87,7 @@ class AuthController {
     }
 
     async registerUser(req, res) {
-        const { name, email, password } = req.body;
+        const { name, email, password, username } = req.body;
 
         try {
             let user = await userService.findUser({ email });
@@ -101,6 +102,14 @@ class AuthController {
                 name,
                 email,
                 password: hashedPassword,
+                username
+            });
+
+            // create profile
+            await profileService.addOne({
+                user: mongoose.Types.ObjectId(user._id),
+                username,
+                name,
             });
 
             // generate new token
